@@ -339,13 +339,16 @@ impl Editor {
     }
     fn next_tab(&mut self) {
         // Move to the next tab
-        if self.tab.saturating_add(1) < self.doc.len() {
-            self.tab = self.tab.saturating_add(1);
-        }
+        self.tab = (self.tab + 1) % self.doc.len();
     }
     fn prev_tab(&mut self) {
         // Move to the previous tab
-        self.tab = self.tab.saturating_sub(1);
+        if self.tab == 0 {
+            self.tab = self.doc.len() - 1;
+        } else {
+            self.tab = self.tab - 1;
+        }
+        //self.tab = self.tab.saturating_sub(1);
     }
     pub fn execute(&mut self, event: Event, reversed: bool) {
         // Event executor
